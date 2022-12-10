@@ -2,8 +2,9 @@ package admin
 
 import "gorm.io/gorm"
 
-type Admin struct{
+type Admin struct {
 	gorm.Model
-	UserName string
-	UserPass string
+	UserName  string
+	UserPass  string
+	AdminName string
 }

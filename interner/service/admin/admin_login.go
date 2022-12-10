@@ -1,6 +1,8 @@
 package admin
 
 import (
+	"encoding/json"
+
 	"github.com/OPengXJ/GoPro/interner/repository/mysql/admin"
 )
 
@@ -9,12 +11,8 @@ type LoginRequest struct {
 	Password string `form:"password"`
 }
 
-type LoginReponse struct {
-	UserId   uint   `json:"userid"`
-	UserName string `json:"username"`
-}
 
-func (s *Service) Login(req *LoginRequest) (*LoginReponse, error) {
+func (s *Service) Login(req *LoginRequest) ([]byte, error) {
 	qb := admin.NewQueryBuilder()
 	qb.WhereUsername(req.Username)
 	qb.WherePassword(req.Password)
@@ -22,9 +20,15 @@ func (s *Service) Login(req *LoginRequest) (*LoginReponse, error) {
 	if err != nil {
 		return nil, err
 	}
-	res := &LoginReponse{
-		UserId:   admin.ID,
-		UserName: admin.UserName,
+	var LoginReponse struct{
+		UserId uint `json:"userid"`
+		UserName string `json:"username"`
 	}
-	return res, nil
+	LoginReponse.UserId=admin.ID
+	LoginReponse.UserName=admin.UserName
+	byte,err:=json.Marshal(LoginReponse)
+	if err!=nil{
+		return nil,err
+	}
+	return byte, nil
 }

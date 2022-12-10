@@ -1,4 +1,4 @@
-package admin
+package student
 
 import (
 	"fmt"
@@ -6,11 +6,11 @@ import (
 	"gorm.io/gorm"
 )
 
-func NewModel() *Admin {
-	return new(Admin)
+func NewModel() *Student {
+	return new(Student)
 }
 
-func (t *Admin) Create(db *gorm.DB) error {
+func (t *Student) Create(db *gorm.DB) error {
 	result := db.Create(t)
 	if result.Error != nil {
 		return result.Error
@@ -18,12 +18,12 @@ func (t *Admin) Create(db *gorm.DB) error {
 	return nil
 }
 
-func NewQueryBuilder() *adminQueryBuilder {
-	return new(adminQueryBuilder)
+func NewQueryBuilder() *studentQueryBuilder {
+	return new(studentQueryBuilder)
 }
 
 // 将所有的查询条件封装在一个struct中
-type adminQueryBuilder struct {
+type studentQueryBuilder struct {
 	order []string
 	where []struct {
 		prefix string
@@ -33,7 +33,7 @@ type adminQueryBuilder struct {
 	offset int
 }
 
-func (qb *adminQueryBuilder) BuildQuery(db *gorm.DB) *gorm.DB {
+func (qb *studentQueryBuilder) BuildQuery(db *gorm.DB) *gorm.DB {
 	ret := db
 	for _, where := range qb.where {
 		ret = ret.Where(where.prefix, where.value)
@@ -41,17 +41,17 @@ func (qb *adminQueryBuilder) BuildQuery(db *gorm.DB) *gorm.DB {
 	return ret
 }
 
-func (qb *adminQueryBuilder) First(db *gorm.DB) (*Admin, error) {
-	admin := &Admin{}
-	res := qb.BuildQuery(db).First(admin)
+func (qb *studentQueryBuilder) First(db *gorm.DB) (*Student, error) {
+	student := &Student{}
+	res := qb.BuildQuery(db).First(student)
 	if res.Error != nil && res.Error == gorm.ErrRecordNotFound {
-		admin = nil
+		student = nil
 	}
 
-	return admin, res.Error
+	return student, res.Error
 }
 
-func (qb *adminQueryBuilder) WhereUsername(value string) *adminQueryBuilder {
+func (qb *studentQueryBuilder) WhereUsername(value string) *studentQueryBuilder {
 	qb.where = append(qb.where, struct {
 		prefix string
 		value  interface{}
@@ -62,7 +62,7 @@ func (qb *adminQueryBuilder) WhereUsername(value string) *adminQueryBuilder {
 	return qb
 }
 
-func (qb *adminQueryBuilder) WherePassword(value string) *adminQueryBuilder {
+func (qb *studentQueryBuilder) WherePassword(value string) *studentQueryBuilder {
 	qb.where = append(qb.where, struct {
 		prefix string
 		value  interface{}

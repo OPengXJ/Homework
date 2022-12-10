@@ -1,4 +1,4 @@
-package admin
+package teacher
 
 import (
 	"fmt"
@@ -6,11 +6,11 @@ import (
 	"gorm.io/gorm"
 )
 
-func NewModel() *Admin {
-	return new(Admin)
+func NewModel() *Teacher {
+	return new(Teacher)
 }
 
-func (t *Admin) Create(db *gorm.DB) error {
+func (t *Teacher) Create(db *gorm.DB) error {
 	result := db.Create(t)
 	if result.Error != nil {
 		return result.Error
@@ -18,12 +18,12 @@ func (t *Admin) Create(db *gorm.DB) error {
 	return nil
 }
 
-func NewQueryBuilder() *adminQueryBuilder {
-	return new(adminQueryBuilder)
+func NewQueryBuilder() *teacherQueryBuilder {
+	return new(teacherQueryBuilder)
 }
 
 // 将所有的查询条件封装在一个struct中
-type adminQueryBuilder struct {
+type teacherQueryBuilder struct {
 	order []string
 	where []struct {
 		prefix string
@@ -33,7 +33,7 @@ type adminQueryBuilder struct {
 	offset int
 }
 
-func (qb *adminQueryBuilder) BuildQuery(db *gorm.DB) *gorm.DB {
+func (qb *teacherQueryBuilder) BuildQuery(db *gorm.DB) *gorm.DB {
 	ret := db
 	for _, where := range qb.where {
 		ret = ret.Where(where.prefix, where.value)
@@ -41,8 +41,8 @@ func (qb *adminQueryBuilder) BuildQuery(db *gorm.DB) *gorm.DB {
 	return ret
 }
 
-func (qb *adminQueryBuilder) First(db *gorm.DB) (*Admin, error) {
-	admin := &Admin{}
+func (qb *teacherQueryBuilder) First(db *gorm.DB) (*Teacher, error) {
+	admin := &Teacher{}
 	res := qb.BuildQuery(db).First(admin)
 	if res.Error != nil && res.Error == gorm.ErrRecordNotFound {
 		admin = nil
@@ -51,7 +51,7 @@ func (qb *adminQueryBuilder) First(db *gorm.DB) (*Admin, error) {
 	return admin, res.Error
 }
 
-func (qb *adminQueryBuilder) WhereUsername(value string) *adminQueryBuilder {
+func (qb *teacherQueryBuilder) WhereUsername(value string) *teacherQueryBuilder {
 	qb.where = append(qb.where, struct {
 		prefix string
 		value  interface{}
@@ -62,7 +62,7 @@ func (qb *adminQueryBuilder) WhereUsername(value string) *adminQueryBuilder {
 	return qb
 }
 
-func (qb *adminQueryBuilder) WherePassword(value string) *adminQueryBuilder {
+func (qb *teacherQueryBuilder) WherePassword(value string) *teacherQueryBuilder {
 	qb.where = append(qb.where, struct {
 		prefix string
 		value  interface{}

@@ -1,6 +1,7 @@
 package middlewares
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/OPengXJ/GoPro/configs"
@@ -11,10 +12,12 @@ import (
 type UserClaims struct {
 	UserId   uint
 	UserName string
+	UserType string
 	jwt.RegisteredClaims
 }
 
-func JWTAuth() gin.HandlerFunc {
+//在传入参数这加入userType类型，实现只靠一个验证中间件就能实现对多个角色的验证
+func JWTAuth(userType string) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		tokenString := ctx.GetHeader("x-token")
 		if tokenString == "" {
@@ -28,6 +31,9 @@ func JWTAuth() gin.HandlerFunc {
 			return
 		}
 		token, err := jwt.ParseWithClaims(tokenString, &UserClaims{}, func(t *jwt.Token) (interface{}, error) {
+			if _,ok:=t.Method.(*jwt.SigningMethodHMAC);!ok{
+				return nil,fmt.Errorf("unexpected signing method: %v",t.Header["alg"])
+			}
 			jwtConfig := configs.Get().JwtPass
 			return []byte(jwtConfig), nil
 		})
@@ -40,6 +46,14 @@ func JWTAuth() gin.HandlerFunc {
 			return
 		}
 		if claims, ok := token.Claims.(*UserClaims); ok && token.Valid {
+			if claims.UserType !=userType{
+				err:=fmt.Errorf("token is not for %s", userType)
+				ctx.JSON(http.StatusUnauthorized,gin.H{
+					"erroraa":err.Error(),
+				})
+				ctx.Abort()
+				return
+			}
 			ctx.Set("claims", claims)
 			ctx.Set("uid", claims.UserId)
 			ctx.Next()
@@ -50,5 +64,6 @@ func JWTAuth() gin.HandlerFunc {
 			ctx.Abort()
 			return
 		}
+		
 	}
 }
