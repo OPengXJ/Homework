@@ -72,3 +72,16 @@ func (qb *studentQueryBuilder) WherePassword(value string) *studentQueryBuilder 
 	})
 	return qb
 }
+
+func (qb *studentQueryBuilder) WhereStuClass(value string) *studentQueryBuilder {
+	qb.where = append(qb.where, struct {
+		prefix string
+		value  interface{}
+	}{
+		fmt.Sprintf("%v = ?", "stu_class"),
+		value,
+	})
+	return qb
+}
+
+

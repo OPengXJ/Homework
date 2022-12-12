@@ -12,3 +12,14 @@
 2022-12-10T14:54:51.425+0800	[35mDEBUG[0m	GoPro/main.go:19	test	{"hello": "log work success"}
 2022-12-10T14:55:43.622+0800	[35mDEBUG[0m	GoPro/main.go:19	test	{"hello": "log work success"}
 2022-12-10T14:57:14.421+0800	[35mDEBUG[0m	GoPro/main.go:19	test	{"hello": "log work success"}
+2022-12-11T19:18:19.573+0800	[35mDEBUG[0m	GoPro/main.go:19	test	{"hello": "log work success"}
+2022-12-11T19:19:31.638+0800	[35mDEBUG[0m	GoPro/main.go:19	test	{"hello": "log work success"}
+2022-12-11T19:20:28.924+0800	[35mDEBUG[0m	GoPro/main.go:19	test	{"hello": "log work success"}
+2022-12-12T12:41:19.166+0800	[35mDEBUG[0m	GoPro/main.go:19	test	{"hello": "log work success"}
+2022-12-12T12:49:03.460+0800	[35mDEBUG[0m	GoPro/main.go:19	test	{"hello": "log work success"}
+2022-12-12T12:56:19.241+0800	[35mDEBUG[0m	GoPro/main.go:19	test	{"hello": "log work success"}
+2022-12-12T13:27:03.796+0800	[35mDEBUG[0m	GoPro/main.go:19	test	{"hello": "log work success"}
+2022-12-12T13:31:02.001+0800	[35mDEBUG[0m	GoPro/main.go:19	test	{"hello": "log work success"}
+2022-12-12T13:37:49.853+0800	[35mDEBUG[0m	GoPro/main.go:19	test	{"hello": "log work success"}
+2022-12-12T13:41:10.426+0800	[35mDEBUG[0m	GoPro/main.go:19	test	{"hello": "log work success"}
+2022-12-12T14:06:21.705+0800	[35mDEBUG[0m	GoPro/main.go:19	test	{"hello": "log work success"}

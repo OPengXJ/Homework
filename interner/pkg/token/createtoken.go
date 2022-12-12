@@ -4,9 +4,8 @@ import (
 	"encoding/json"
 	"net/http"
 	"time"
-
 	"github.com/OPengXJ/GoPro/configs"
-	"github.com/OPengXJ/GoPro/interner/router/middlewares"
+	"github.com/OPengXJ/Homework/interner/router/middlewares"
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v4"
 )

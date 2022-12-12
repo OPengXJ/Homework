@@ -3,9 +3,9 @@ package admin
 import (
 	"net/http"
 
-	"github.com/OPengXJ/GoPro/interner/pkg/token"
+	"github.com/OPengXJ/Homework/interner/pkg/token"
 	"github.com/OPengXJ/GoPro/interner/repository/mysql"
-	"github.com/OPengXJ/GoPro/interner/service/admin"
+	"github.com/OPengXJ/Homework/interner/service/admin"
 	"github.com/gin-gonic/gin"
 )
 
