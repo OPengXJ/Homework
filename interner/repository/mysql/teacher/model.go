@@ -7,4 +7,5 @@ type Teacher struct {
 	TeaGender string
 	TeaPhone  string
 	TeaName   string
+	TeaCollege string
 }

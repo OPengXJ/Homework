@@ -10,6 +10,8 @@ type CreateStudentData struct {
 	StuClass string `form:"stuclass" bind:"required"`
 	StuMajor string `form:"stumajor" bind:"required"`
 	StuName  string `form:"stuname" bind:"required"`
+	StuCollege string `form:"stucollege" bind:"required"`
+	StuSession string `form:"stusession" bind:"required"`
 }
 
 func (s *Service) Create(data *CreateStudentData) error {
@@ -19,6 +21,8 @@ func (s *Service) Create(data *CreateStudentData) error {
 	model.StuClass = data.StuClass
 	model.StuMajor = data.StuMajor
 	model.StuName = data.StuName
+	model.StuCollege=data.StuCollege
+	model.StuSession=data.StuSession
 	err := model.Create(s.db.Write)
 	if err != nil {
 		return err

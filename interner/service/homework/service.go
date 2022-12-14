@@ -1,4 +1,4 @@
-package student
+package homework
 
 import (
 	"github.com/OPengXJ/Homework/interner/repository/mysql"

@@ -1,12 +1,19 @@
 package homework
 
-import "gorm.io/gorm"
+import (
+	"time"
+
+	"gorm.io/gorm"
+)
 
 type Homework struct {
 	gorm.Model
-	Classname string
+	College   string
+	TeaName string
+	ClassName string
 	Content   string
-	StartTime string
-	Deadline  string
-	Workname  string
+	StartTime time.Time
+	Deadline  time.Time
+	WorkName  string
+	Session int
 }

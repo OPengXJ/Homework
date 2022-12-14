@@ -9,4 +9,6 @@ type Student struct {
 	StuMajor  string
 	StuPhone  string
 	StuName   string
+	StuCollege string
+	StuSession string
 }
