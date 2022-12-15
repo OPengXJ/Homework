@@ -26,7 +26,7 @@ func (s *Service) TeacherList(data *SearchTeacherData) ([]*teacher.Teacher, erro
 	offset := (page - 1) * pageSize
 	qb.OffSet(offset)
 	qb.Order(data.Order)
-	TeacherList, err := qb.QueryAll(s.db.Read)
+	TeacherList, err := qb.QueryAll(s.db.Read,s.ctx)
 	if err != nil {
 		return nil, err
 	}

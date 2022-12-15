@@ -29,3 +29,6 @@
 2022-12-14T14:15:26.142+0800	[31mERROR[0m	GoPro/main.go:20	test	{"hello": "log work"}
 2022-12-14T14:18:04.247+0800	[31mERROR[0m	GoPro/main.go:20	test	{"hello": "log work"}
 2022-12-14T14:23:36.151+0800	[31mERROR[0m	GoPro/main.go:20	test	{"hello": "log work"}
+2022-12-14T14:37:06.565+0800	[31mERROR[0m	GoPro/main.go:20	test	{"hello": "log work"}
+2022-12-15T21:58:57.432+0800	[31mERROR[0m	GoPro/main.go:20	test	{"hello": "log work"}
+2022-12-15T22:01:14.247+0800	[31mERROR[0m	GoPro/main.go:20	test	{"hello": "log work"}

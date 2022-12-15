@@ -1,21 +1,24 @@
 package teacher
 
 import (
+	"context"
+
 	"github.com/OPengXJ/Homework/interner/repository/mysql"
-	"github.com/go-redis/redis"
 	myredis "github.com/OPengXJ/Homework/interner/repository/redis"
 )
 
 
 type Service struct{
 	db mysql.Repo
-	redis *redis.Client
+	cache *myredis.Cache
+	ctx context.Context
 
 }
 
-func New(db mysql.Repo)*Service{
+func New(db mysql.Repo,ctx context.Context)*Service{
 	return &Service{
 		db: db,
-		redis: myredis.GetRedisRepo(),
+		cache: myredis.GetRedisCache(),
+		ctx:ctx,
 	}
 }

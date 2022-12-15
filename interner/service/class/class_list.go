@@ -30,7 +30,7 @@ func (s *Service) ClassList(data *SearchClassData) ([]*class.Class,error ){
 	offset := (page - 1) * pageSize
 	qb.OffSet(offset)
 	qb.Order(data.Order)
-	ClassList,err:=qb.QueryAll(s.db.Read)
+	ClassList,err:=qb.QueryAll(s.db.Read,s.ctx)
 	if err!=nil{
 		return nil,err
 	}

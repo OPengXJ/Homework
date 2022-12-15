@@ -1,6 +1,7 @@
 package class
 
 import (
+	"context"
 	"fmt"
 
 	"gorm.io/gorm"
@@ -8,14 +9,6 @@ import (
 
 func NewModel() *Class {
 	return new(Class)
-}
-
-func (t *Class) Create(db *gorm.DB) error {
-	result := db.Create(t)
-	if result.Error != nil {
-		return result.Error
-	}
-	return nil
 }
 
 func NewQueryBuilder() *classQueryBuilder {
@@ -44,16 +37,6 @@ func (qb *classQueryBuilder) BuildQuery(db *gorm.DB) *gorm.DB {
 		ret=ret.Order(order)
 	}
 	return ret
-}
-
-func (qb *classQueryBuilder) First(db *gorm.DB) (*Class, error) {
-	class := &Class{}
-	res := qb.BuildQuery(db).First(class)
-	if res.Error != nil && res.Error == gorm.ErrRecordNotFound {
-		class = nil
-	}
-
-	return class, res.Error
 }
 
 func (qb *classQueryBuilder) WhereCollege(value string) *classQueryBuilder {
@@ -92,9 +75,31 @@ func (qb *classQueryBuilder)Order(value []string)*classQueryBuilder{
 	return qb
 }
 
-func (qb *classQueryBuilder) QueryAll(db *gorm.DB) ([]*Class, error) {
+
+
+//封装后真正调用的函数
+func (t *Class) Create(db *gorm.DB) error {
+	result := db.Create(t)
+	if result.Error != nil {
+		return result.Error
+	}
+	return nil
+}
+
+
+func (qb *classQueryBuilder) First(db *gorm.DB,ctx context.Context) (*Class, error) {
+	class := &Class{}
+	res := qb.BuildQuery(db).WithContext(ctx).First(class)
+	if res.Error != nil && res.Error == gorm.ErrRecordNotFound {
+		class = nil
+	}
+
+	return class, res.Error
+}
+
+func (qb *classQueryBuilder) QueryAll(db *gorm.DB,ctx context.Context) ([]*Class, error) {
 	class := make([]*Class,0)
-	res := qb.BuildQuery(db).Find(&class)
+	res := qb.BuildQuery(db).WithContext(ctx).Find(&class)
 	if res.Error != nil && res.Error == gorm.ErrRecordNotFound {
 		class = nil
 	}

@@ -1,6 +1,7 @@
 package teacher
 
 import (
+	"context"
 	"fmt"
 
 	"gorm.io/gorm"
@@ -9,8 +10,6 @@ import (
 func NewModel() *Teacher {
 	return new(Teacher)
 }
-
-
 
 func NewQueryBuilder() *teacherQueryBuilder {
 	return new(teacherQueryBuilder)
@@ -68,26 +67,24 @@ func (qb *teacherQueryBuilder) WhereTeaCollege(value string) *teacherQueryBuilde
 	return qb
 }
 
-
-func (qb *teacherQueryBuilder)Limit(value int)*teacherQueryBuilder{
-	qb.limit=value
+func (qb *teacherQueryBuilder) Limit(value int) *teacherQueryBuilder {
+	qb.limit = value
 	return qb
 }
-func(qb *teacherQueryBuilder)OffSet(value int)*teacherQueryBuilder{
-	qb.offset=value
-	return qb
-}
-
-func (qb *teacherQueryBuilder)Order(value []string)*teacherQueryBuilder{
-	qb.order=append(qb.order,value...)
+func (qb *teacherQueryBuilder) OffSet(value int) *teacherQueryBuilder {
+	qb.offset = value
 	return qb
 }
 
+func (qb *teacherQueryBuilder) Order(value []string) *teacherQueryBuilder {
+	qb.order = append(qb.order, value...)
+	return qb
+}
 
-//经过封装后后的，真正进行相应操作的函数
-func (qb *teacherQueryBuilder) First(db *gorm.DB) (*Teacher, error) {
+// 经过封装后后的，真正进行相应操作的函数
+func (qb *teacherQueryBuilder) First(db *gorm.DB, ctx context.Context) (*Teacher, error) {
 	admin := &Teacher{}
-	res := qb.BuildQuery(db).First(admin)
+	res := qb.BuildQuery(db).WithContext(ctx).First(admin)
 	if res.Error != nil && res.Error == gorm.ErrRecordNotFound {
 		admin = nil
 	}
@@ -103,10 +100,9 @@ func (t *Teacher) Create(db *gorm.DB) error {
 	return nil
 }
 
-
-func (qb *teacherQueryBuilder) QueryAll(db *gorm.DB) ([]*Teacher, error) {
-	teacher := make([]*Teacher,0)
-	res := qb.BuildQuery(db).Find(&teacher)
+func (qb *teacherQueryBuilder) QueryAll(db *gorm.DB, ctx context.Context) ([]*Teacher, error) {
+	teacher := make([]*Teacher, 0)
+	res := qb.BuildQuery(db).WithContext(ctx).Find(&teacher)
 	if res.Error != nil && res.Error == gorm.ErrRecordNotFound {
 		teacher = nil
 	}

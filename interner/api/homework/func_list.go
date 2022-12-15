@@ -18,7 +18,7 @@ func (h *Handle) List() gin.HandlerFunc {
 			return
 		}
 		rep := mysql.GetMysqlRepo()
-		service := homework.New(*rep)
+		service := homework.New(*rep,ctx)
 		HomeworkList, err := service.HomeworkList(searchHomeworkData)
 		if err != nil {
 			ctx.AbortWithError(http.StatusBadRequest, err)

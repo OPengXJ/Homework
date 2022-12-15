@@ -20,7 +20,7 @@ func(h *Handle)Login()gin.HandlerFunc{
 			return
 		}
 		rep:=mysql.GetMysqlRepo()
-		service:=admin.New(*rep)
+		service:=admin.New(*rep,ctx)
 		res,err:=service.Login(req)
 		if err!=nil{
 			ctx.String(http.StatusBadRequest,"登陆名或者密码不正确：%v",err)

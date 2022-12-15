@@ -16,7 +16,7 @@ func (s *Service) Login(req *LoginRequest) ([]byte, error) {
 	qb := admin.NewQueryBuilder()
 	qb.WhereUsername(req.Username)
 	qb.WherePassword(req.Password)
-	admin, err := qb.First(s.db.Read)
+	admin, err := qb.First(s.db.Read,s.ctx)
 	if err != nil {
 		return nil, err
 	}

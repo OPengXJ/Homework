@@ -18,7 +18,7 @@ func (h *Handle) List() gin.HandlerFunc {
 			return
 		}
 		rep := mysql.GetMysqlRepo()
-		service := class.New(*rep)
+		service := class.New(*rep,ctx)
 		ClassList, err := service.ClassList(searchClassData)
 		if err != nil {
 			ctx.AbortWithError(http.StatusBadRequest, err)

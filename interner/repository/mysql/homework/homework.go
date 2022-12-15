@@ -1,6 +1,7 @@
 package homework
 
 import (
+	"context"
 	"fmt"
 
 	"gorm.io/gorm"
@@ -8,14 +9,6 @@ import (
 
 func NewModel() *Homework {
 	return new(Homework)
-}
-
-func (t *Homework) Create(db *gorm.DB) error {
-	result := db.Create(t)
-	if result.Error != nil {
-		return result.Error
-	}
-	return nil
 }
 
 func NewQueryBuilder() *homeworkQueryBuilder {
@@ -44,16 +37,6 @@ func (qb *homeworkQueryBuilder) BuildQuery(db *gorm.DB) *gorm.DB {
 		ret=ret.Order(order)
 	}
 	return ret
-}
-
-func (qb *homeworkQueryBuilder) First(db *gorm.DB) (*Homework, error) {
-	homework := &Homework{}
-	res := qb.BuildQuery(db).First(homework)
-	if res.Error != nil && res.Error == gorm.ErrRecordNotFound {
-		homework = nil
-	}
-
-	return homework, res.Error
 }
 
 func (qb *homeworkQueryBuilder) WhereCollege(value string) *homeworkQueryBuilder {
@@ -114,9 +97,29 @@ func (qb *homeworkQueryBuilder)Order(value []string)*homeworkQueryBuilder{
 	return qb
 }
 
-func (qb *homeworkQueryBuilder) QueryAll(db *gorm.DB) ([]*Homework, error) {
+
+//封装后，最终调用的方法
+func (t *Homework) Create(db *gorm.DB) error {
+	result := db.Create(t)
+	if result.Error != nil {
+		return result.Error
+	}
+	return nil
+}
+
+func (qb *homeworkQueryBuilder) First(db *gorm.DB,ctx context.Context) (*Homework, error) {
+	homework := &Homework{}
+	res := qb.BuildQuery(db).WithContext(ctx).First(homework)
+	if res.Error != nil && res.Error == gorm.ErrRecordNotFound {
+		homework = nil
+	}
+
+	return homework, res.Error
+}
+
+func (qb *homeworkQueryBuilder) QueryAll(db *gorm.DB,ctx context.Context) ([]*Homework, error) {
 	homework := make([]*Homework,0)
-	res := qb.BuildQuery(db).Find(&homework)
+	res := qb.BuildQuery(db).WithContext(ctx).Find(&homework)
 	if res.Error != nil && res.Error == gorm.ErrRecordNotFound {
 		homework = nil
 	}

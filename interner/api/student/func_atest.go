@@ -10,8 +10,8 @@ import (
 
 func (h *Handle) ATest() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		redis := redis.GetRedisRepo()
-		redis.Set("hello", "world", 0)
-		ctx.String(http.StatusOK, redis.Get("hello").String())
+		cache := redis.GetRedisCache()
+		cache.Redis.Set(ctx,"hello", "world", 0)
+		ctx.String(http.StatusOK, cache.Redis.Get(ctx,"hello").String())
 	}
 }

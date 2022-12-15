@@ -19,7 +19,7 @@ func (h *Handle) Create() gin.HandlerFunc {
 		}
 		fmt.Println(createData)
 		repo := mysql.GetMysqlRepo()
-		service := teacher.New(*repo)
+		service := teacher.New(*repo,ctx)
 		if err := service.Create(createData); err != nil {
 			log.Println("Create failed")
 			return

@@ -38,7 +38,7 @@ func (s *Service) HomeworkList(data *SearchHomeworkData) ([]*homework.Homework,e
 	offset := (page - 1) * pageSize
 	qb.OffSet(offset)
 	qb.Order(data.Order)
-	HomeworkList,err:=qb.QueryAll(s.db.Read)
+	HomeworkList,err:=qb.QueryAll(s.db.Read,s.ctx)
 	if err!=nil{
 		return nil,err
 	}

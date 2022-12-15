@@ -1,6 +1,7 @@
 package admin
 
 import (
+	"context"
 	"fmt"
 
 	"gorm.io/gorm"
@@ -8,14 +9,6 @@ import (
 
 func NewModel() *Admin {
 	return new(Admin)
-}
-
-func (t *Admin) Create(db *gorm.DB) error {
-	result := db.Create(t)
-	if result.Error != nil {
-		return result.Error
-	}
-	return nil
 }
 
 func NewQueryBuilder() *adminQueryBuilder {
@@ -41,16 +34,6 @@ func (qb *adminQueryBuilder) BuildQuery(db *gorm.DB) *gorm.DB {
 	return ret
 }
 
-func (qb *adminQueryBuilder) First(db *gorm.DB) (*Admin, error) {
-	admin := &Admin{}
-	res := qb.BuildQuery(db).First(admin)
-	if res.Error != nil && res.Error == gorm.ErrRecordNotFound {
-		admin = nil
-	}
-
-	return admin, res.Error
-}
-
 func (qb *adminQueryBuilder) WhereUsername(value string) *adminQueryBuilder {
 	qb.where = append(qb.where, struct {
 		prefix string
@@ -71,4 +54,24 @@ func (qb *adminQueryBuilder) WherePassword(value string) *adminQueryBuilder {
 		value,
 	})
 	return qb
+}
+
+
+//封装后真正调用的函数
+
+func (t *Admin) Create(db *gorm.DB) error {
+	result := db.Create(t)
+	if result.Error != nil {
+		return result.Error
+	}
+	return nil
+}
+func (qb *adminQueryBuilder) First(db *gorm.DB,ctx context.Context) (*Admin, error) {
+	admin := &Admin{}
+	res := qb.BuildQuery(db).WithContext(ctx).First(admin)
+	if res.Error != nil && res.Error == gorm.ErrRecordNotFound {
+		admin = nil
+	}
+
+	return admin, res.Error
 }

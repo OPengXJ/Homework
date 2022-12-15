@@ -29,3 +29,6 @@
 2022-12-14T14:15:26.139+0800	[35mDEBUG[0m	GoPro/main.go:19	test	{"hello": "log work success"}
 2022-12-14T14:18:04.246+0800	[35mDEBUG[0m	GoPro/main.go:19	test	{"hello": "log work success"}
 2022-12-14T14:23:36.151+0800	[35mDEBUG[0m	GoPro/main.go:19	test	{"hello": "log work success"}
+2022-12-14T14:37:06.563+0800	[35mDEBUG[0m	GoPro/main.go:19	test	{"hello": "log work success"}
+2022-12-15T21:58:57.429+0800	[35mDEBUG[0m	GoPro/main.go:19	test	{"hello": "log work success"}
+2022-12-15T22:01:14.246+0800	[35mDEBUG[0m	GoPro/main.go:19	test	{"hello": "log work success"}

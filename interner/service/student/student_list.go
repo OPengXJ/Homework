@@ -38,7 +38,7 @@ func (s *Service) StudentList(data *SearchStudentData) ([]*student.Student, erro
 	offset := (page - 1) * pageSize
 	qb.OffSet(offset)
 	qb.Order(data.Order)
-	StudentList, err := qb.QueryAll(s.db.Read)
+	StudentList, err := qb.QueryAll(s.db.Read,s.ctx)
 	if err != nil {
 		return nil, err
 	}

@@ -1,6 +1,7 @@
 package student
 
 import (
+	"context"
 	"fmt"
 
 	"gorm.io/gorm"
@@ -130,9 +131,9 @@ func (t *Student) Create(db *gorm.DB) error {
 	return nil
 }
 
-func (qb *studentQueryBuilder) First(db *gorm.DB) (*Student, error) {
+func (qb *studentQueryBuilder) First(db *gorm.DB,ctx context.Context) (*Student, error) {
 	student := &Student{}
-	res := qb.BuildQuery(db).First(student)
+	res := qb.BuildQuery(db).WithContext(ctx).First(student)
 	if res.Error != nil && res.Error == gorm.ErrRecordNotFound {
 		student = nil
 	}
@@ -140,9 +141,9 @@ func (qb *studentQueryBuilder) First(db *gorm.DB) (*Student, error) {
 	return student, res.Error
 }
 
-func (qb *studentQueryBuilder) QueryAll(db *gorm.DB) ([]*Student, error) {
+func (qb *studentQueryBuilder) QueryAll(db *gorm.DB,ctx context.Context) ([]*Student, error) {
 	student := make([]*Student,0)
-	res := qb.BuildQuery(db).Find(&student)
+	res := qb.BuildQuery(db).WithContext(ctx).Find(&student)
 	if res.Error != nil && res.Error == gorm.ErrRecordNotFound {
 		student = nil
 	}
