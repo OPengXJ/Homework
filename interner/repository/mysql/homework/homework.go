@@ -96,6 +96,17 @@ func (qb *homeworkQueryBuilder)Order(value []string)*homeworkQueryBuilder{
 	qb.order=append(qb.order,value...)
 	return qb
 }
+func (qb *homeworkQueryBuilder) WhereIdIn(value []string) *homeworkQueryBuilder {
+	qb.where = append(qb.where, struct {
+		prefix string
+		value  interface{}
+	}{
+		fmt.Sprintf("%v %v ?", "id", "IN"),
+		value,
+	})
+	return qb
+}
+
 
 
 //封装后，最终调用的方法

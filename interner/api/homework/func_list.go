@@ -31,3 +31,22 @@ func (h *Handle) List() gin.HandlerFunc {
 		ctx.JSON(http.StatusOK,string(byteData))
 	}
 }
+
+func (h *Handle) ListByES() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		searchHomeworkData := &homework.ESSearchHomeworkData{}
+		err := ctx.ShouldBind(searchHomeworkData)
+		if err != nil {
+			ctx.AbortWithError(http.StatusBadRequest, err)
+			return
+		}
+		rep := mysql.GetMysqlRepo()
+		service := homework.New(*rep,ctx)
+		HomeworkList, err := service.HomeworkListByES(searchHomeworkData)
+		if err != nil {
+			ctx.String(http.StatusBadRequest, err.Error())
+			return
+		}
+		ctx.JSON(http.StatusOK,HomeworkList)
+	}
+}

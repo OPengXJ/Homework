@@ -38,6 +38,17 @@ type Config struct {
 		MinIdleConns int `yaml:"minidleconns"`
 
 	}`yaml:"redis"`
+	ElasticSearch struct{
+		Addr string	`yaml:"addr"`
+		User	string	`yaml:"user"`
+		Pass	string	`yaml:"pass"`
+		//是否使用Gzip压缩
+		Gzip	bool	`yaml:"gzip"`
+		//检查时间间隔
+		CheckInterval	time.Duration	`yaml:"checkinterval"`
+		//最大重试次数
+		MaxRetries	int	`yaml:"maxretries"`
+	}`yaml:"elasticsearch"`
 }
 
 func init() {

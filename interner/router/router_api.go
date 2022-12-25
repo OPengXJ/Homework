@@ -87,7 +87,7 @@ func setApiRouter(r *gin.Engine){
 		teacherHomework:=teacherAuthed.Group("/homework")
 		{
 			teacherHomework.POST("/create",homeworkHandler.Create())
-			teacherHomework.GET("/list",homeworkHandler.List())
+			teacherHomework.GET("/list",homeworkHandler.ListByES())
 		}
 		//老师在学生模块下的功能路径
 		teacherStudent:=teacherAuthed.Group("/student")

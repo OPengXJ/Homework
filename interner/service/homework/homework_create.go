@@ -6,8 +6,10 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/OPengXJ/Homework/interner/repository/elasticsearch"
+	eshomework "github.com/OPengXJ/Homework/interner/repository/elasticsearch/homework"
 	"github.com/OPengXJ/Homework/interner/repository/mysql/homework"
-	"gorm.io/gorm"
+	"github.com/OPengXJ/Homework/interner/repository/redis"
 )
 
 type CreateHomeworkData struct {
@@ -19,6 +21,7 @@ type CreateHomeworkData struct {
 	Deadline  string `form:"deadline"`
 	WorkName  string `form:"workname"`
 	Session   string `form:"session"`
+	TeaId	int	`form:"teaid"`
 }
 
 func (s *Service) Create(data *CreateHomeworkData) error {
@@ -29,6 +32,7 @@ func (s *Service) Create(data *CreateHomeworkData) error {
 	model.ClassName = data.ClassName
 	model.Content = data.Content
 	model.WorkName = data.WorkName
+	model.TeaId=data.TeaId
 	//这里假设从前端传入的格式为 "2022-12-13T10:11"
 	timeFormat := "2006-01-02T15:04"
 	startTime, err := time.ParseInLocation(timeFormat, data.StartTime, time.Local)
@@ -49,24 +53,40 @@ func (s *Service) Create(data *CreateHomeworkData) error {
 	if err != nil {
 		return err
 	}
-	//再从mysql读出数据,为了得到id
-	cacheData:=homework.NewModel()
-	res:=s.db.Write.First(cacheData)
-	if res.Error!=nil&&res.Error==gorm.ErrRecordNotFound{
-		cacheData=nil
-	}
-	cache,err:=json.Marshal(cacheData)
-	if err!=nil{
+	cache, err := json.Marshal(model)
+	if err != nil {
 		fmt.Println(err.Error())
-		return nil
+		return err
 	}
 	//作业不经常变动，且发布后经常被学生访问，所以缓存进redis
-	//key为学院:年级。 Field为老师:班级  value:作业json数据 过期时间：3/4个作业完成时间
-	key := fmt.Sprintf("%s:%d", model.College, model.Session)
-	field := fmt.Sprintf("%s:%s", model.TeaName, model.ClassName)
-	s.cache.TairRedis.ExHSet(s.ctx, key, field,string(cache))
 	//计算缓存的时间
-	milesecond:=model.Deadline.Sub(model.StartTime).Milliseconds()
-	s.cache.TairRedis.ExHExpire(s.ctx, key, field,int(milesecond))
+	milesecond := model.Deadline.Sub(model.StartTime).Milliseconds()*3/4
+	setdata:=&redis.HomeworkCreateData{
+		College: model.College,
+		ClassName: model.ClassName,
+		TeaId: model.TeaId,
+		Value: string(cache),
+		WorkId: int(model.ID),
+		ExitTime: int(milesecond),
+	}
+	err=s.cache.SetCache(s.ctx,setdata)
+	if err!=nil{
+		fmt.Println("设置缓存失败",err.Error())
+		return err
+	}
+	esHomeWorkSearch:=eshomework.NewModel()
+	esHomeWorkSearch.Id=int(model.ID)
+	esHomeWorkSearch.StartTime=model.StartTime
+	esHomeWorkSearch.DeadLine=model.Deadline
+	esHomeWorkSearch.ClassName=model.ClassName
+	esHomeWorkSearch.TeaName=model.TeaName
+	esHomeWorkSearch.College=model.College
+	esHomeWorkSearch.Session=model.Session
+	esHomeWorkSearch.TeaId=model.TeaId
+	esHomeWorkSearch.WorkId=int(model.ID)
+	err=esHomeWorkSearch.Create(elasticsearch.GetEsClient(),s.ctx)
+	if err!=nil{
+		return err
+	}
 	return nil
 }
