@@ -101,7 +101,18 @@ func (qb *homeworkQueryBuilder) WhereIdIn(value []string) *homeworkQueryBuilder 
 		prefix string
 		value  interface{}
 	}{
-		fmt.Sprintf("%v %v ?", "id", "IN"),
+		fmt.Sprintf("%v = ?", "id"),
+		value,
+	})
+	return qb
+}
+
+func (qb *homeworkQueryBuilder) WhereId(value string) *homeworkQueryBuilder {
+	qb.where = append(qb.where, struct {
+		prefix string
+		value  interface{}
+	}{
+		fmt.Sprintf("%v = ?", "id"),
 		value,
 	})
 	return qb

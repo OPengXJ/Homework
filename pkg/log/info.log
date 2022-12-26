@@ -149,3 +149,7 @@
 2022-12-25T13:04:17.151+0800	[34mINFO[0m	log/log.go:120	POST http://43.139.144.29:9200/homework/_search?pretty=true [status:200, request:0.029s]
 2022-12-25T13:06:20.943+0800	[35mDEBUG[0m	GoPro/main.go:19	test	{"hello": "log work success"}
 2022-12-25T13:06:23.545+0800	[34mINFO[0m	log/log.go:120	POST http://43.139.144.29:9200/homework/_search?pretty=true [status:200, request:0.026s]
+2022-12-26T14:25:27.365+0800	[35mDEBUG[0m	GoPro/main.go:19	test	{"hello": "log work success"}
+2022-12-26T14:31:40.948+0800	[35mDEBUG[0m	GoPro/main.go:19	test	{"hello": "log work success"}
+2022-12-26T14:42:28.792+0800	[35mDEBUG[0m	GoPro/main.go:19	test	{"hello": "log work success"}
+2022-12-26T14:44:26.746+0800	[35mDEBUG[0m	GoPro/main.go:19	test	{"hello": "log work success"}

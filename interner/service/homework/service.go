@@ -10,13 +10,13 @@ import (
 )
 
 type Service struct {
-	db    mysql.Repo
+	db    *mysql.Repo
 	cache *myredis.Cache
 	es	*elastic.Client
 	ctx   context.Context
 }
 
-func New(db mysql.Repo, ctx context.Context) *Service {
+func New(db *mysql.Repo, ctx context.Context) *Service {
 	return &Service{
 		db:    db,
 		cache: myredis.GetRedisCache(),

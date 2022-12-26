@@ -64,7 +64,6 @@ func (s *Service) Create(data *CreateHomeworkData) error {
 	setdata:=&redis.HomeworkCreateData{
 		College: model.College,
 		ClassName: model.ClassName,
-		TeaId: model.TeaId,
 		Value: string(cache),
 		WorkId: int(model.ID),
 		ExitTime: int(milesecond),

@@ -9,7 +9,6 @@ import (
 type HomeworkCreateData struct{
 	College string
 	ClassName string
-	TeaId int
 	WorkId	int
 	Value string
 	ExitTime int
